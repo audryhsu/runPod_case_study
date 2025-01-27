@@ -7,10 +7,10 @@ from diffusers import FluxPipeline
 from huggingface_hub import login
 
 login(token=os.getenv("HUGGINGFACE_TOKEN"))
-
+print(os.getenv("HUGGINGFACE_TOKEN"))
 pipe = FluxPipeline.from_pretrained(
     "black-forest-labs/FLUX.1-dev",
-    torch_dtype=torch.bfloat16,
+    torch_dtype=torch.float16,
     use_auth_token=True
 ).to("cuda")
 
