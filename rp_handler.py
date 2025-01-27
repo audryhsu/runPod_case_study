@@ -2,23 +2,18 @@ import runpod
 import torch
 import io
 import base64
-from diffusers import FluxPipeline
+from transformers import pipeline
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model = pipeline("text-to-image", model="black-forest-labs/FLUX.1-dev", device=0 if device == "cuda" else -1)
 
 def handler(event):
     input = event['input']
     prompt = input.get('prompt')
-    pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", torch_dtype=torch.float16).to("cuda")
+    print("Prompt = ", prompt)
 
     # Placeholder for a task; replace with image or text generation logic as needed
-    image = pipe(
-        prompt,
-        height=1024,
-        width=1024,
-        guidance_scale=3.5,
-        num_inference_steps=50,
-        max_sequence_length=512,
-        generator=torch.Generator("cuda").manual_seed(0)
-    ).images[0]
+    image = model(prompt).images[0]
 
     buffered = io.BytesIO()
     image.save(buffered, format="PNG")
