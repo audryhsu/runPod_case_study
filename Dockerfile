@@ -8,7 +8,7 @@ COPY rp_handler.py /app/rp_handler.py
 
 # Install dependencies
 RUN pip install --upgrade pip
-RUN pip install torch torchvision diffusers runpod transformers
+RUN pip install torch torchvision diffusers runpod transformers accelerate
 
 # Expose the port (if required by RunPod)
 EXPOSE 8000
