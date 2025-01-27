@@ -7,7 +7,7 @@ from diffusers import FluxPipeline
 def handler(event):
     input = event['input']
     prompt = input.get('prompt')
-    pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", torch_dtype=torch.bfloat16).to("cuda")
+    pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", torch_dtype=torch.float16).to("cuda")
 
     # Placeholder for a task; replace with image or text generation logic as needed
     image = pipe(
