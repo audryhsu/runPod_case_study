@@ -24,14 +24,17 @@ if not os.path.exists(target_path):
 else:
     print(f"{target_path} already present")
 
-print("Downloading the model")
-# Download the model in the mount directory
-snapshot_download(
-    repo_id="black-forest-labs/FLUX.1-dev",
-    cache_dir=target_path,
-    use_auth_token=huggingface_token
-)
-print(f"Model downloaded to {target_path}")
+if not os.path.exists(target_path) or not os.listdir(target_path):
+    print("Model not found. Downloading the model...")
+    # Download the model
+    snapshot_download(
+        repo_id="black-forest-labs/FLUX.1-dev",
+        cache_dir=target_path,
+        use_auth_token=huggingface_token
+    )
+    print(f"Model downloaded to {target_path}")
+else:
+    print(f"Model already exists at {target_path}. Skipping download.")
 
 # Get disk usage statistics for /mnt
 total, used, free = shutil.disk_usage("/mnt")
