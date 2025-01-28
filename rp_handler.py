@@ -5,8 +5,15 @@ import io
 import base64
 from diffusers import FluxPipeline
 from huggingface_hub import login, snapshot_download
+import shutil
 
-# first download the model in the mount directory
+# Get disk usage statistics for /mnt
+total, used, free = shutil.disk_usage("/mnt")
+
+print(f"Total: {total // (2**30)} GB")
+print(f"Used: {used // (2**30)} GB")
+print(f"Free: {free // (2**30)} GB")
+
 
 # Fetch token from the environment
 huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
@@ -14,12 +21,18 @@ if not huggingface_token:
     raise ValueError("HUGGINGFACE_TOKEN is not set.")
 
 # Log in
-login(token=huggingface_token)
+#login(token=huggingface_token)
 
 # Path to download the model in the mounted volume
 target_path = "/mnt/model/FLUX.1-dev"
 
-# Download the model
+if not os.path.exists(target_path):
+    print("Creating the directory")
+    os.makedirs(target_path)
+else:
+    print(f"{target_path} already present")
+
+# Download the model in the mount directory
 snapshot_download(
     repo_id="black-forest-labs/FLUX.1-dev",
     cache_dir=target_path,
