@@ -4,10 +4,29 @@ import os
 import io
 import base64
 from diffusers import FluxPipeline
-from huggingface_hub import login
+from huggingface_hub import login, snapshot_download
 
-login(token=os.getenv("HUGGINGFACE_TOKEN"))
-print(os.getenv("HUGGINGFACE_TOKEN"))
+# first download the model in the mount directory
+
+# Fetch token from the environment
+huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+if not huggingface_token:
+    raise ValueError("HUGGINGFACE_TOKEN is not set.")
+
+# Log in
+login(token=huggingface_token)
+
+# Path to download the model in the mounted volume
+target_path = "/mnt/model/FLUX.1-dev"
+
+# Download the model
+snapshot_download(
+    repo_id="black-forest-labs/FLUX.1-dev",
+    cache_dir=target_path,
+    use_auth_token=huggingface_token
+)
+print(f"Model downloaded to {target_path}")
+
 MODEL_PATH = "/mnt/model-storage/FLUX.1-dev"
 
 # Load the pipeline from the pre-downloaded model
