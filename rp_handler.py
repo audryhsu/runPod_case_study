@@ -16,7 +16,7 @@ if not huggingface_token:
 login(token=huggingface_token)
 
 # Path to download the model in the mounted volume
-target_path = "/mnt/model/FLUX.1-dev"
+target_path = "/mnt/model/FLUX.1-schnell"
 
 if not os.path.exists(target_path):
     print("Creating the directory")
@@ -28,7 +28,7 @@ if not os.path.exists(target_path) or not os.listdir(target_path):
     print("Model not found. Downloading the model...")
     # Download the model
     snapshot_download(
-        repo_id="black-forest-labs/FLUX.1-dev",
+        repo_id="black-forest-labs/FLUX.1-schnell",
         cache_dir=target_path,
         use_auth_token=huggingface_token
     )
