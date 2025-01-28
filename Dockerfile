@@ -8,15 +8,6 @@ COPY rp_handler.py /app/rp_handler.py
 
 # Install dependencies to call huggingface
 RUN pip install --upgrade pip
-RUN pip install huggingface-hub
-
-ARG HUGGINGFACE_TOKEN
-ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
-
-# Download the model into the network volume
-RUN mkdir -p /mnt/model && \
-    huggingface-cli login --token ${HUGGINGFACE_TOKEN} && \
-    huggingface-cli snapshot-download black-forest-labs/FLUX.1-dev --cache-dir /mnt/model
 
 # Install remaining packages
 RUN pip install torch torchvision diffusers runpod transformers accelerate

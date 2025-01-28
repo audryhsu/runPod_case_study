@@ -19,9 +19,11 @@ print(f"Free: {free // (2**30)} GB")
 huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
 if not huggingface_token:
     raise ValueError("HUGGINGFACE_TOKEN is not set.")
+else:
+    print("HUGGINGFACE_TOKEN is set")
 
 # Log in
-#login(token=huggingface_token)
+login(token=huggingface_token)
 
 # Path to download the model in the mounted volume
 target_path = "/mnt/model/FLUX.1-dev"
