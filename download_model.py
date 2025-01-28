@@ -1,8 +1,8 @@
 from huggingface_hub import snapshot_download
 import os
 
-print("Environment Variables:", os.environ)
-token = os.getenv("HUGGINGFACE_TOKEN")
+print("Trying to find a secret:", os.getenv('RUNPOD_SECRET_HUGGINGFACE_TOKEN'))
+token = os.getenv("RUNPOD_SECRET_HUGGINGFACE_TOKEN")
 if not token:
     raise ValueError("HUGGINGFACE_TOKEN is not set in the environment.")
 # Path to download the model in the mounted volume
