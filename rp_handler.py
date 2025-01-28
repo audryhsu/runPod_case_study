@@ -43,7 +43,7 @@ print(f"Total: {total // (2**30)} GB")
 print(f"Used: {used // (2**30)} GB")
 print(f"Free: {free // (2**30)} GB")
 
-MODEL_PATH = "/mnt/model-storage/FLUX.1-dev"
+MODEL_PATH = "/mnt/model/FLUX.1-schnell"
 
 # Load the pipeline from the pre-downloaded model
 pipe = FluxPipeline.from_pretrained(
