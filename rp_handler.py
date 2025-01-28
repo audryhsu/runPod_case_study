@@ -8,10 +8,12 @@ from huggingface_hub import login
 
 login(token=os.getenv("HUGGINGFACE_TOKEN"))
 print(os.getenv("HUGGINGFACE_TOKEN"))
+MODEL_PATH = "/mnt/model-storage/FLUX.1-dev"
+
+# Load the pipeline from the pre-downloaded model
 pipe = FluxPipeline.from_pretrained(
-    "black-forest-labs/FLUX.1-dev",
-    torch_dtype=torch.float16,
-    use_auth_token=True
+    MODEL_PATH,
+    torch_dtype=torch.float16
 ).to("cuda")
 
 

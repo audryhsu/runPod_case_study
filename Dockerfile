@@ -5,10 +5,14 @@ WORKDIR /app
 
 # Copy code
 COPY rp_handler.py /app/rp_handler.py
+COPY download_model.py /app/download_model.py
 
 # Install dependencies
 RUN pip install --upgrade pip
 RUN pip install torch torchvision diffusers runpod transformers accelerate
+
+VOLUME ["/mnt/model"]
+RUN python3 /app/download_model.py
 
 # Expose the port (if required by RunPod)
 EXPOSE 8000
