@@ -2,17 +2,25 @@ import runpod
 import json
 from diffusers import StableDiffusionPipeline
 from transformers import AutoTokenizer
+from huggingface_hub import login
 import torch
+import os
 
 # Initialize global variables
 model_id = "stability-ai/stable-diffusion-2-1-base"  # Choose a lightweight model
 cache_dir = "/tmp/model"  # Use /tmp for serverless environments
+
+huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+if not huggingface_token:
+    raise ValueError("HUGGINGFACE_TOKEN is not set.")
 
 # Load model once to reuse across invocations
 pipeline = None
 
 def load_model():
     global pipeline
+
+    login(token=huggingface_token)
 
     if pipeline is None:
         print("Loading Stable Diffusion model...")
