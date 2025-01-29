@@ -1,7 +1,7 @@
 import runpod
 import json
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
-from transformers import AutoTokenizer
+import base64
 from huggingface_hub import login
 import torch
 import os
@@ -53,17 +53,22 @@ def handler(event, context=None):
         images = pipeline(prompt, num_inference_steps=50, guidance_scale=7.5).images
         image_data = []
 
+        print("No. of images genereated = ", len(images))
         for idx, img in enumerate(images):
             # Convert image to a format suitable for response
             img_path = f"/tmp/image_{idx}.png"
+            print(f"Saving image - {img_path}")
             img.save(img_path)
             with open(img_path, "rb") as image_file:
-                image_data.append(image_file.read())
+                image_bytes = image_file.read()
+                image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+                image_data.append(image_base64)
+            break
 
         return {
             "statusCode": 200,
-            "headers": {"Content-Type": "application/octet-stream"},
-            "body": image_data[0]  # Send first image as the response
+            "headers": {"Content-Type": "application/json"},
+            "body": image_data[0]
         }
 
     except Exception as e:
