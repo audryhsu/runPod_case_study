@@ -15,6 +15,7 @@ if not huggingface_token:
 # Log in
 login(token=huggingface_token)
 
+'''
 # Path to download the model in the mounted volume
 target_path = "/mnt/model/FLUX.1-schnell"
 
@@ -42,14 +43,11 @@ total, used, free = shutil.disk_usage("/mnt")
 print(f"Total: {total // (2**30)} GB")
 print(f"Used: {used // (2**30)} GB")
 print(f"Free: {free // (2**30)} GB")
-
+'''
 MODEL_PATH = "/mnt/model/FLUX.1-schnell"
 
 # Load the pipeline from the pre-downloaded model
-pipe = FluxPipeline.from_pretrained(
-    MODEL_PATH,
-    torch_dtype=torch.float16
-).to("cuda")
+pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-schnell", torch_dtype=torch.bfloat16).to("cuda")
 
 
 def handler(event):
