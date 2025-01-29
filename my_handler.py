@@ -6,8 +6,7 @@ from huggingface_hub import login
 import torch
 import os
 
-# Initialize global variables
-model_id = "stability-ai/stable-diffusion-2-1-base"  # Choose a lightweight model
+model_id = "stabilityai/stable-diffusion-2-1-base"
 cache_dir = "/tmp/model"  # Use /tmp for serverless environments
 
 huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
