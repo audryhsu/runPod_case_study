@@ -33,13 +33,13 @@ def load_model():
     else:
         print("Model already loaded.")
 
-def handler(event, context=None):
-    # Ensure the model is loaded
-    load_model()
+# Ensure the model is loaded
+load_model()
 
+def handler(event, context=None):
     # Parse input
     try:
-        body = json.loads(event.get("input", "{}"))
+        body = event.get("input", {})
         prompt = body.get("prompt", "A futuristic cityscape at sunset")
     except json.JSONDecodeError:
         return {"statusCode": 400, "body": "Invalid JSON input."}
