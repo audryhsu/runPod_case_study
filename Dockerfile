@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Copy code
 COPY rp_handler.py /app/rp_handler.py
+COPY my_handler.py /app/my_handler.py
 
 # Install dependencies to call huggingface
 RUN pip install --upgrade pip
@@ -17,4 +18,4 @@ RUN pip install flax jax jaxlib
 EXPOSE 8000
 
 # Set the handler as the entry point
-CMD ["python3", "rp_handler.py"]
+CMD ["python3", "my_handler.py"]
