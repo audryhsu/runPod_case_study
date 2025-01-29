@@ -1,6 +1,6 @@
 import runpod
 import json
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 from transformers import AutoTokenizer
 from huggingface_hub import login
 import torch
@@ -26,12 +26,9 @@ def load_model():
         print("Loading Stable Diffusion model...")
         
         # Load the Stable Diffusion model and tokenizer
-        pipeline = StableDiffusionPipeline.from_pretrained(
-            model_id,
-            cache_dir=cache_dir,
-            torch_dtype=torch.float16,
-            safety_checker=None  # Disable safety checker if not needed
-        ).to("cuda" if torch.cuda.is_available() else "cpu")
+        scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
+        pipeline = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)
+        pipeline = pipeline.to("cuda")
         
         print("Model loaded successfully.")
     else:
