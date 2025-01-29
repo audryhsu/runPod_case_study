@@ -10,7 +10,8 @@ COPY rp_handler.py /app/rp_handler.py
 RUN pip install --upgrade pip
 
 # Install remaining packages
-RUN pip install torch torchvision diffusers runpod transformers accelerate
+RUN pip install torch diffusers runpod transformers accelerate
+RUN pip install flax jax jaxlib
 
 # Expose the port (if required by RunPod)
 EXPOSE 8000

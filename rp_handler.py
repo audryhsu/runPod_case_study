@@ -4,6 +4,7 @@ import os
 import io
 import base64
 from diffusers import FluxPipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from huggingface_hub import login, snapshot_download
 import shutil
 
@@ -14,6 +15,8 @@ if not huggingface_token:
 
 # Log in
 login(token=huggingface_token)
+
+model_name = "dalle-mini/dalle-mini"
 
 '''
 # Path to download the model in the mounted volume
@@ -46,8 +49,11 @@ print(f"Free: {free // (2**30)} GB")
 '''
 MODEL_PATH = "/mnt/model/FLUX.1-schnell"
 
-# Load the pipeline from the pre-downloaded model
-pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-schnell", torch_dtype=torch.bfloat16).to("cuda")
+# Load the tokenizer and model
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name)
+
+print("Download complete")
 
 
 def handler(event):
