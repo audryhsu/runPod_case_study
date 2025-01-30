@@ -10,3 +10,14 @@ The platform provides AI endpoints tailored for inference workloads, ensuring se
 
 ## Objectives
 
+- Write a handler.py file that can handle serverless requests for the given model.
+
+- Build a Docker image that includes your serverless handler and the model.
+
+- Deploy a serverless endpoint on the RunPod platform.
+
+- Test that the serverless endpoint is able to receive an input (via text) and return an appropriate image for display
+
+## Solution
+
+- 
