@@ -2,18 +2,39 @@ import runpod
 import json
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 import base64
+from huggingface_hub import login
 import torch
+import os
 
 model_id = "stabilityai/stable-diffusion-2-1-base"
-# Define model path inside the container
-MODEL_PATH = "/app/model"
+cache_dir = "/tmp/model"  # Use /tmp for serverless environments
 
-# Load the pre-downloaded model instead of fetching it again
-scheduler = EulerDiscreteScheduler.from_pretrained(MODEL_PATH, subfolder="scheduler")
-pipeline = StableDiffusionPipeline.from_pretrained(MODEL_PATH, scheduler=scheduler, torch_dtype=torch.float16)
-pipeline = pipeline.to("cuda")
+huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+if not huggingface_token:
+    raise ValueError("HUGGINGFACE_TOKEN is not set.")
 
-print("Model is ready for use")
+# Load model once to reuse across invocations
+pipeline = None
+
+def load_model():
+    global pipeline
+
+    login(token=huggingface_token)
+
+    if pipeline is None:
+        print("Loading Stable Diffusion model...")
+        
+        # Load the Stable Diffusion model and tokenizer
+        scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
+        pipeline = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)
+        pipeline = pipeline.to("cuda")
+        
+        print("Model loaded successfully.")
+    else:
+        print("Model already loaded.")
+
+# Ensure the model is loaded
+load_model()
 
 def handler(event, context=None):
     # Parse input
